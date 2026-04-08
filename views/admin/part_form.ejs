@@ -1,0 +1,102 @@
+<%- include('../layouts/header') %>
+<%- include('../layouts/navbar') %>
+
+<div class="flex">
+    <%- include('../layouts/sidebar') %>
+    
+    <main class="flex-grow lg:pl-64 pt-8 p-12 max-w-screen-xl mx-auto">
+        <div class="mb-10">
+            <a href="/admin" class="flex items-center text-indigo-600 hover:text-indigo-800 font-bold mb-6 transition-soft group">
+                <svg class="w-5 h-5 mr-3 group-hover:-translate-x-2 transition-soft" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> 
+                Batal & Kembali
+            </a>
+            <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight"><%= part ? 'Edit' : 'Tambah' %> <span class="text-indigo-600">Sparepart</span></h1>
+            <p class="text-slate-500 mt-2">Isi detail produk di bawah ini untuk memperbarui katalog Anda.</p>
+        </div>
+
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-12 ring-1 ring-slate-100">
+            <form action="/admin/parts/<%= part ? 'edit/' + part.id : 'add' %>" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                
+                <!-- Left: Info -->
+                <div class="space-y-8">
+                    <div class="space-y-2">
+                        <label for="name" class="block text-sm font-bold text-slate-700 tracking-tight">Nama Produk Sparepart</label>
+                        <input type="text" id="name" name="name" required value="<%= part ? part.name : '' %>"
+                            class="block w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-indigo-100 transition-soft text-slate-800 outline-none"
+                            placeholder="Misal: Busi Iridium Yamaha NMAX">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="price" class="block text-sm font-bold text-slate-700 tracking-tight">Harga Jual (Rp)</label>
+                            <input type="number" id="price" name="price" required value="<%= part ? parseInt(part.price) : '' %>"
+                                class="block w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-indigo-100 transition-soft text-slate-800 outline-none"
+                                placeholder="0">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="stock" class="block text-sm font-bold text-slate-700 tracking-tight">Stok Awal</label>
+                            <input type="number" id="stock" name="stock" required value="<%= part ? part.stock : '' %>"
+                                class="block w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-indigo-100 transition-soft text-slate-800 outline-none"
+                                placeholder="0">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="description" class="block text-sm font-bold text-slate-700 tracking-tight">Deskripsi & Spesifikasi</label>
+                        <textarea id="description" name="description" rows="5" 
+                            class="block w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-indigo-100 transition-soft text-slate-800 outline-none resize-none"
+                            placeholder="Tuliskan keterangan detail sparepart..."><%= part ? part.description : '' %></textarea>
+                    </div>
+                </div>
+
+                <!-- Right: Image Upload -->
+                <div class="space-y-8 flex flex-col h-full">
+                    <div class="space-y-2 flex-grow">
+                        <label class="block text-sm font-bold text-slate-700 tracking-tight">Foto Produk</label>
+                        <div class="relative group h-full max-h-[300px]">
+                            <div class="w-full h-64 rounded-[2rem] bg-slate-50 border-4 border-dashed border-slate-100 flex flex-col items-center justify-center p-8 group-hover:bg-indigo-50 group-hover:border-indigo-100 transition-soft overflow-hidden">
+                                <% if(part && part.image) { %>
+                                    <img src="<%= part.image %>" class="w-full h-full object-cover rounded-xl" id="previewImg">
+                                <% } else { %>
+                                    <div class="text-slate-300 mb-4" id="placeholder">
+                                        <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                                    </div>
+                                    <img src="" class="hidden w-full h-full object-cover rounded-xl" id="previewImg">
+                                    <p class="text-sm font-bold text-slate-400 text-center" id="statusTxt">Drag & drop atau klik untuk upload foto</p>
+                                <% } %>
+                                <input type="file" name="image" id="fileInput" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onchange="previewImage(event)">
+                            </div>
+                        </div>
+                        <p class="text-[10px] uppercase font-bold text-slate-400 mt-2 text-center tracking-widest italic">Format: JPG, PNG, WEBP (Max 2MB)</p>
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full bg-indigo-600 hover:bg-slate-800 text-white font-black py-5 px-10 rounded-2xl shadow-xl shadow-indigo-100 transform active:scale-95 transition-soft text-lg duration-300">
+                        <%= part ? 'Simpan Perubahan' : 'Publish Barang Sekarang' %>
+                    </button>
+                    <p class="text-xs text-center text-slate-400 font-medium">Data akan otomatis masuk ke katalog customer setelah disimpan.</p>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const reader = new FileReader();
+        const placeholder = document.getElementById('placeholder');
+        const preview = document.getElementById('previewImg');
+        const statusTxt = document.getElementById('statusTxt');
+
+        reader.onload = function() {
+            preview.src = reader.result;
+            preview.classList.remove('hidden');
+            if (placeholder) placeholder.classList.add('hidden');
+            if (statusTxt) statusTxt.innerText = 'Foto siap dikirim!';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
+
+<%- include('../layouts/footer') %>
