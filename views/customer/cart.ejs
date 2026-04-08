@@ -1,0 +1,73 @@
+<%- include('../layouts/header') %>
+<%- include('../layouts/navbar') %>
+
+<main class="max-w-7xl mx-auto px-6 py-12">
+    <div class="mb-12 border-b border-slate-100 pb-10">
+        <h1 class="text-5xl font-black text-slate-800 tracking-tight leading-tight">Keranjang <span class="text-indigo-600">Belanja</span></h1>
+        <p class="mt-4 text-xl text-slate-500 font-medium">Lengkapi kebutuhan sparepart Anda dalam satu kali transaksi.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <!-- List Items -->
+        <div class="lg:col-span-2 space-y-6">
+            <% cart.forEach(item => { %>
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 flex items-center gap-6 group hover:shadow-xl transition-soft ring-1 ring-slate-100/50">
+                    <div class="h-24 w-24 rounded-2xl bg-slate-50 overflow-hidden flex-shrink-0">
+                        <% if(item.image) { %>
+                            <img src="<%= item.image %>" class="w-full h-full object-cover">
+                        <% } else { %>
+                            <div class="w-full h-full flex items-center justify-center text-slate-200">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                            </div>
+                        <% } %>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="text-lg font-black text-slate-800"><%= item.name %></h3>
+                        <p class="text-sm font-bold text-indigo-600 mt-1">Rp <%= item.price.toLocaleString('id-ID') %> / pcs</p>
+                        <div class="flex items-center gap-4 mt-3">
+                            <span class="text-xs font-bold text-slate-400">Jumlah: <span class="text-slate-800"><%= item.qty %></span></span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-black text-slate-900 mb-2">Rp <%= (item.price * item.qty).toLocaleString('id-ID') %></p>
+                        <a href="/customer/cart/remove/<%= item.id %>" class="text-xs text-red-500 font-black uppercase tracking-widest hover:text-red-700 transition-soft">Hapus</a>
+                    </div>
+                </div>
+            <% }) %>
+
+            <% if(cart.length === 0) { %>
+                <div class="bg-slate-50 rounded-3xl p-20 text-center border-4 border-dashed border-slate-100">
+                    <p class="text-xl font-bold text-slate-400 italic">Keranjang belanja Anda masih kosong.</p>
+                    <a href="/customer" class="mt-6 inline-block bg-primary text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-indigo-100">Beli Barang Sekarang</a>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- summary -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-xl ring-1 ring-slate-100 sticky top-28">
+                <h2 class="text-2xl font-black text-slate-800 mb-8">Ringkasan Pesanan</h2>
+                <div class="space-y-4 mb-8">
+                    <div class="flex justify-between text-sm font-bold text-slate-400 font-medium">
+                        <span>Total Barang</span>
+                        <span class="text-slate-800"><%= cart.length %> Produk</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-black text-slate-900 border-t border-slate-50 pt-6">
+                        <span>Total Bayar</span>
+                        <span class="text-indigo-600 tracking-tighter tabular-nums">Rp <%= total.toLocaleString('id-ID') %></span>
+                    </div>
+                </div>
+
+                <form action="/customer/checkout" method="POST">
+                    <button type="submit" <%= cart.length === 0 ? 'disabled' : '' %>
+                        class="w-full bg-primary hover:bg-slate-800 disabled:bg-slate-200 text-white font-black py-5 rounded-2xl shadow-2xl shadow-indigo-200 transition-soft transform active:scale-95 text-lg">
+                        Lanjut Checkout &rarr;
+                    </button>
+                </form>
+                <p class="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest mt-6">Aman & Terverifikasi Admin</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../layouts/footer') %>

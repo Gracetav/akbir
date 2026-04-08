@@ -32,23 +32,65 @@ const CustomerController = {
         }
     },
 
-    async checkout(req, res) {
+    async addToCart(req, res) {
         const { id, qty } = req.body;
-        const userId = req.session.userId;
         try {
             const part = await Sparepart.getById(id);
-            if (!part || part.stock < qty) {
-                return res.status(400).send('Stok tidak memadai atau produk tidak ada');
+            if (!part || part.stock < parseInt(qty)) {
+                return res.status(400).send('Stok tidak memadai');
             }
 
-            const totalPrice = part.price * qty;
-            const items = [{
-                sparepart_id: id,
-                qty: qty,
-                price: part.price
-            }];
+            if (!req.session.cart) req.session.cart = [];
+            
+            const existingItem = req.session.cart.find(item => item.id === parseInt(id));
+            if (existingItem) {
+                existingItem.qty += parseInt(qty);
+            } else {
+                req.session.cart.push({
+                    id: parseInt(id),
+                    name: part.name,
+                    price: part.price,
+                    qty: parseInt(qty),
+                    image: part.image
+                });
+            }
+            res.redirect('/customer/cart');
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Gagal tambah ke keranjang');
+        }
+    },
+
+    async viewCart(req, res) {
+        const cart = req.session.cart || [];
+        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        res.render('customer/cart', { cart, total });
+    },
+
+    async removeFromCart(req, res) {
+        const { id } = req.params;
+        if (req.session.cart) {
+            req.session.cart = req.session.cart.filter(item => item.id !== parseInt(id));
+        }
+        res.redirect('/customer/cart');
+    },
+
+    async checkout(req, res) {
+        const userId = req.session.userId;
+        const cart = req.session.cart || [];
+        
+        if (cart.length === 0) return res.status(400).send('Keranjang kosong');
+
+        try {
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const items = cart.map(item => ({
+                sparepart_id: item.id,
+                qty: item.qty,
+                price: item.price
+            }));
 
             await Transaction.create(userId, totalPrice, items);
+            req.session.cart = []; // Clear cart
             res.redirect('/customer/history');
         } catch (error) {
             console.error(error);

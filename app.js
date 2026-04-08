@@ -27,6 +27,13 @@ app.use(session({
     }
 }));
 
+// Global Locals Middleware
+app.use((req, res, next) => {
+    res.locals.cartCount = (req.session.cart) ? req.session.cart.reduce((sum, item) => sum + item.qty, 0) : 0;
+    res.locals.user = req.session;
+    next();
+});
+
 // Routes
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');

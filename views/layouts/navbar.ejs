@@ -15,26 +15,36 @@
             <% if (locals.user && user.userId) { %>
             <div class="flex items-center space-x-6">
                 <% if(user.role === 'customer') { %>
-                    <a href="/customer" class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-soft">Belanja</a>
-                    <a href="/customer/history" class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-soft">Riwayat</a>
+                    <a href="/customer" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-soft">Beranda</a>
+                    <a href="/customer/history" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition-soft">Riwayat</a>
+                    
+                    <!-- Cart Icon with Badge -->
+                    <a href="/customer/cart" class="relative p-2 text-slate-400 hover:text-indigo-600 transition-soft">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        <% if(locals.cartCount > 0) { %>
+                        <span class="absolute top-0 right-0 h-4 w-4 bg-red-500 text-[10px] text-white font-black flex items-center justify-center rounded-full ring-2 ring-white">
+                            <%= cartCount %>
+                        </span>
+                        <% } %>
+                    </a>
                 <% } %>
                 
                 <div class="flex items-center pl-6 border-l border-slate-200">
-                    <div class="mr-4 text-right">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest"><%= user.role %></p>
-                        <p class="text-sm font-semibold text-slate-800"><%= user.userName %></p>
+                    <div class="mr-4 text-right hidden md:block">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1"><%= user.role %></p>
+                        <p class="text-sm font-bold text-slate-800 leading-none"><%= user.userName %></p>
                     </div>
                     <div class="relative group">
-                        <button class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 border-2 border-white shadow-sm ring-1 ring-slate-100">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        <button class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 border-2 border-white shadow-sm ring-1 ring-slate-100">
+                            <span class="font-bold text-sm"><%= user.userName.charAt(0) %></span>
                         </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-soft z-50">
-                            <div class="p-4 border-b border-slate-50">
-                                <p class="text-xs text-slate-400">Masuk sebagai</p>
-                                <p class="text-sm font-bold truncate"><%= user.userName %></p>
+                        <div class="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-soft z-50">
+                            <div class="p-4 border-b border-slate-50 bg-slate-50/50">
+                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Akun Aktif</p>
+                                <p class="text-sm font-bold truncate text-slate-800"><%= user.userName %></p>
                             </div>
-                            <a href="/auth/logout" class="block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-soft rounded-b-2xl">
-                                Logout
+                            <a href="/auth/logout" class="block w-full text-left px-4 py-3 text-sm text-red-600 font-bold hover:bg-red-50 transition-soft rounded-b-2xl">
+                                Keluar Aplikasi
                             </a>
                         </div>
                     </div>
@@ -44,3 +54,10 @@
         </div>
     </div>
 </nav>
+
+<style>
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+    }
+</style>
