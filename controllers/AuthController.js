@@ -7,6 +7,29 @@ const AuthController = {
         res.render('auth/login', { error: null });
     },
 
+    registerPage(req, res) {
+        if (req.session.userId) return res.redirect('/');
+        res.render('auth/register', { error: null });
+    },
+
+    async register(req, res) {
+        const { name, email, password } = req.body;
+        try {
+            const existingUser = await User.findByEmail(email);
+            if (existingUser) {
+                return res.render('auth/register', { error: 'Email sudah terdaftar.' });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await User.create(name, email, hashedPassword, 'customer');
+
+            res.redirect('/auth/login?registered=true');
+        } catch (error) {
+            console.error(error);
+            res.render('auth/register', { error: 'Gagal mendaftarkan akun.' });
+        }
+    },
+
     async login(req, res) {
         const { email, password } = req.body;
         try {
