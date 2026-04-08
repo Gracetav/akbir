@@ -38,7 +38,7 @@
             <% if(cart.length === 0) { %>
                 <div class="bg-slate-50 rounded-3xl p-20 text-center border-4 border-dashed border-slate-100">
                     <p class="text-xl font-bold text-slate-400 italic">Keranjang belanja Anda masih kosong.</p>
-                    <a href="/customer" class="mt-6 inline-block bg-primary text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-indigo-100">Beli Barang Sekarang</a>
+                    <a href="/customer" class="mt-6 inline-block bg-indigo-600 text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-indigo-100">Beli Barang Sekarang</a>
                 </div>
             <% } %>
         </div>
@@ -60,7 +60,7 @@
 
                 <form action="/customer/checkout-page" method="GET">
                     <button type="submit" <%= cart.length === 0 ? 'disabled' : '' %>
-                        class="w-full bg-primary hover:bg-slate-800 disabled:bg-slate-200 text-white font-black py-5 rounded-2xl shadow-2xl shadow-indigo-200 transition-soft transform active:scale-95 text-lg">
+                        class="w-full bg-indigo-600 hover:bg-slate-800 disabled:bg-slate-200 text-white font-black py-5 rounded-2xl shadow-xl shadow-indigo-100 transition-soft transform active:scale-95 text-lg opacity-100 block">
                         Lanjut ke Pembayaran &rarr;
                     </button>
                 </form>
