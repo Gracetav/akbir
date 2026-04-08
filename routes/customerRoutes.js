@@ -12,6 +12,7 @@ router.get('/history', CustomerController.history);
 router.get('/cart', CustomerController.viewCart);
 router.post('/cart', CustomerController.addToCart);
 router.get('/cart/remove/:id', CustomerController.removeFromCart);
+router.get('/checkout-page', CustomerController.checkoutPage);
 router.post('/checkout', CustomerController.checkout);
 router.post('/upload-proof', upload.single('proof'), CustomerController.uploadProof);
 

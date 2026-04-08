@@ -75,6 +75,13 @@ const CustomerController = {
         res.redirect('/customer/cart');
     },
 
+    async checkoutPage(req, res) {
+        const cart = req.session.cart || [];
+        if (cart.length === 0) return res.redirect('/customer/cart');
+        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        res.render('customer/checkout_page', { cart, total });
+    },
+
     async checkout(req, res) {
         const userId = req.session.userId;
         const cart = req.session.cart || [];

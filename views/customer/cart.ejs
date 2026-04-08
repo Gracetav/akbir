@@ -58,10 +58,10 @@
                     </div>
                 </div>
 
-                <form action="/customer/checkout" method="POST">
+                <form action="/customer/checkout-page" method="GET">
                     <button type="submit" <%= cart.length === 0 ? 'disabled' : '' %>
                         class="w-full bg-primary hover:bg-slate-800 disabled:bg-slate-200 text-white font-black py-5 rounded-2xl shadow-2xl shadow-indigo-200 transition-soft transform active:scale-95 text-lg">
-                        Lanjut Checkout &rarr;
+                        Lanjut ke Pembayaran &rarr;
                     </button>
                 </form>
                 <p class="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest mt-6">Aman & Terverifikasi Admin</p>

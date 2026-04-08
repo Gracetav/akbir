@@ -1,0 +1,83 @@
+<%- include('../layouts/header') %>
+<%- include('../layouts/navbar') %>
+
+<main class="max-w-7xl mx-auto px-6 py-12">
+    <div class="mb-12 border-b border-slate-100 pb-10">
+        <h1 class="text-5xl font-black text-slate-800 tracking-tight leading-tight">Detail <span class="text-indigo-600">Checkout</span></h1>
+        <p class="mt-4 text-xl text-slate-500 font-medium">Selesaikan pembayaran untuk memproses pesanan Anda.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <!-- Bank Info -->
+        <div class="space-y-10">
+            <div class="bg-slate-900 rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-xs font-black uppercase tracking-[0.3em] text-indigo-400 mb-8">Informasi Rekening</h2>
+                    <div class="space-y-8">
+                        <div>
+                            <p class="text-sm font-bold opacity-50 mb-1">Bank Pengirim</p>
+                            <p class="text-2xl font-black">Bank Central Asia (BCA)</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold opacity-50 mb-1">Nomor Rekening</p>
+                            <p class="text-4xl font-black tracking-tighter text-indigo-400">7710 4421 99</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold opacity-50 mb-1">Atas Nama</p>
+                            <p class="text-xl font-bold">PT AKBIR PARTS INDONESIA</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decoration Blur -->
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl"></div>
+            </div>
+
+            <div class="bg-indigo-50 rounded-3xl p-8 border border-indigo-100 italic">
+                <p class="text-sm text-indigo-700 font-medium leading-relaxed">
+                    "Harap sertakan nominal yang sesuai hingga digit terakhir untuk mempercepat proses verifikasi oleh tim Admin kami."
+                </p>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="bg-white rounded-[3rem] p-12 border border-slate-100 shadow-xl ring-1 ring-slate-100 h-fit">
+            <h2 class="text-2xl font-black text-slate-800 mb-8">Ringkasan Pesanan</h2>
+            <div class="space-y-6 mb-10">
+                <% cart.forEach(item => { %>
+                    <div class="flex justify-between items-center text-sm">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-800"><%= item.name %></span>
+                            <span class="text-xs text-slate-400 font-bold"><%= item.qty %> x Rp <%= item.price.toLocaleString('id-ID') %></span>
+                        </div>
+                        <span class="font-black text-slate-800">Rp <%= (item.price * item.qty).toLocaleString('id-ID') %></span>
+                    </div>
+                <% }) %>
+                
+                <div class="pt-6 border-t border-slate-100 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Subtotal Pesanan</span>
+                        <span class="font-black text-slate-800">Rp <%= total.toLocaleString('id-ID') %></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Biaya Layanan</span>
+                        <span class="font-black text-emerald-500">GRATIS</span>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t-2 border-slate-900 flex justify-between items-center">
+                    <span class="text-lg font-black text-slate-900">Total Transfer</span>
+                    <span class="text-3xl font-black text-indigo-600 tracking-tighter tabular-nums">Rp <%= total.toLocaleString('id-ID') %></span>
+                </div>
+            </div>
+
+            <form action="/customer/checkout" method="POST">
+                <button type="submit" class="w-full bg-primary hover:bg-slate-800 text-white font-black py-5 rounded-2xl shadow-xl shadow-indigo-100 transition-soft transform active:scale-95 text-lg">
+                    Konfirmasi Pembayaran &rarr;
+                </button>
+            </form>
+            <p class="text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-6">Pesanan Anda akan langsung masuk ke antrean verifikasi</p>
+        </div>
+    </div>
+</main>
+
+<%- include('../layouts/footer') %>
