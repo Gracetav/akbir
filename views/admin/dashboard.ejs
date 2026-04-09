@@ -92,7 +92,14 @@
                                     </div>
                                     <div>
                                         <div class="text-lg font-bold text-slate-800 tracking-tight"><%= part.name %></div>
-                                        <div class="text-xs font-medium text-slate-400 truncate max-w-xs mt-1"><%= part.description %></div>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <% if(part.category_name) { %>
+                                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase rounded-lg border border-indigo-100"><%= part.category_name %></span>
+                                            <% } else { %>
+                                                <span class="px-2 py-0.5 bg-slate-100 text-slate-400 text-[10px] font-black uppercase rounded-lg border border-slate-200">Tidak Terkategori</span>
+                                            <% } %>
+                                            <div class="text-xs font-medium text-slate-400 truncate max-w-xs"><%= part.description %></div>
+                                        </div>
                                     </div>
                                 </div>
                             </td>

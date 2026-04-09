@@ -29,15 +29,27 @@ const migrate = async () => {
         `);
         console.log('Users table ready.');
 
+        // Categories table
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS categories (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                slug VARCHAR(100) NOT NULL
+            )
+        `);
+        console.log('Categories table ready.');
+
         // Spareparts table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS spareparts (
                 id INT AUTO_INCREMENT PRIMARY KEY,
+                category_id INT DEFAULT NULL,
                 name VARCHAR(255) NOT NULL,
                 price DECIMAL(10, 2) NOT NULL,
                 stock INT NOT NULL DEFAULT 0,
                 image VARCHAR(255) DEFAULT NULL,
-                description TEXT
+                description TEXT,
+                FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
             )
         `);
         console.log('Spareparts table ready.');

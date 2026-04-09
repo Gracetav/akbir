@@ -12,15 +12,25 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 2. Spareparts Table
+-- 2. Categories Table
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `slug` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 3. Spareparts Table
 CREATE TABLE IF NOT EXISTS `spareparts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `stock` int(11) NOT NULL DEFAULT 0,
   `image` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 3. Transactions Table

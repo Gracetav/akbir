@@ -1,5 +1,6 @@
 const Sparepart = require('../models/Sparepart');
 const Transaction = require('../models/Transaction');
+const Category = require('../models/Category');
 const multer = require('multer');
 const path = require('path');
 
@@ -33,14 +34,15 @@ const AdminController = {
 
     // Sparepart CRUD
     async createPartPage(req, res) {
-        res.render('admin/part_form', { part: null });
+        const categories = await Category.getAll();
+        res.render('admin/part_form', { part: null, categories });
     },
 
     async createPart(req, res) {
-        const { name, price, stock, description } = req.body;
+        const { name, price, stock, description, category_id } = req.body;
         const image = req.file ? '/uploads/' + req.file.filename : null;
         try {
-            await Sparepart.create(name, price, stock, description, image);
+            await Sparepart.create(name, price, stock, description, image, category_id);
             res.redirect('/admin');
         } catch (error) {
             console.error(error);
@@ -51,7 +53,8 @@ const AdminController = {
     async editPartPage(req, res) {
         try {
             const part = await Sparepart.getById(req.params.id);
-            res.render('admin/part_form', { part });
+            const categories = await Category.getAll();
+            res.render('admin/part_form', { part, categories });
         } catch (error) {
             console.error(error);
             res.status(404).send('Not Found');
@@ -60,10 +63,10 @@ const AdminController = {
 
     async updatePart(req, res) {
         const { id } = req.params;
-        const { name, price, stock, description } = req.body;
+        const { name, price, stock, description, category_id } = req.body;
         const image = req.file ? '/uploads/' + req.file.filename : null;
         try {
-            await Sparepart.update(id, name, price, stock, description, image);
+            await Sparepart.update(id, name, price, stock, description, image, category_id);
             res.redirect('/admin');
         } catch (error) {
             console.error(error);

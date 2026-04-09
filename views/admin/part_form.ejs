@@ -26,6 +26,17 @@
                             placeholder="Misal: Busi Iridium Yamaha NMAX">
                     </div>
 
+                    <div class="space-y-2">
+                        <label for="category_id" class="block text-sm font-bold text-slate-700 tracking-tight">Kategori Produk</label>
+                        <select id="category_id" name="category_id" required
+                            class="block w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-indigo-100 transition-soft text-slate-800 outline-none appearance-none">
+                            <option value="">-- Pilih Kategori --</option>
+                            <% categories.forEach(cat => { %>
+                                <option value="<%= cat.id %>" <%= (part && part.category_id == cat.id) ? 'selected' : '' %>><%= cat.name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label for="price" class="block text-sm font-bold text-slate-700 tracking-tight">Harga Jual (Rp)</label>

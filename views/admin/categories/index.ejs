@@ -1,0 +1,69 @@
+<%- include('../layouts/header') %>
+<%- include('../layouts/navbar') %>
+
+<div class="flex">
+    <%- include('../layouts/sidebar') %>
+    
+    <main class="flex-grow lg:pl-64 pt-8 p-8 max-w-screen-2xl mx-auto">
+        <div class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h1 class="text-3xl font-black text-slate-800 tracking-tight mb-2">Manajemen Kategori</h1>
+                <p class="text-slate-500">Kelola kategori produk untuk pengorganisasian yang lebih baik.</p>
+            </div>
+            <a href="/admin/categories/add" class="inline-flex items-center px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl shadow-xl shadow-indigo-100 transform active:scale-95 transition-soft">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Tambah Kategori
+            </a>
+        </div>
+
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden ring-1 ring-slate-100">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-slate-50">
+                            <th class="px-10 py-6 text-xs font-bold text-slate-500 uppercase tracking-widest">Nama Kategori</th>
+                            <th class="px-10 py-6 text-xs font-bold text-slate-500 uppercase tracking-widest">Slug</th>
+                            <th class="px-10 py-6 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        <% categories.forEach(category => { %>
+                        <tr class="hover:bg-indigo-50/30 transition-soft group">
+                            <td class="px-10 py-8">
+                                <span class="text-lg font-bold text-slate-800 tracking-tight"><%= category.name %></span>
+                            </td>
+                            <td class="px-10 py-8">
+                                <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg text-xs font-mono"><%= category.slug %></span>
+                            </td>
+                            <td class="px-10 py-8 text-right">
+                                <div class="flex justify-end gap-3 transition-soft">
+                                    <a href="/admin/categories/edit/<%= category.id %>" class="p-3 bg-white border border-slate-100 rounded-xl shadow-sm text-indigo-600 hover:bg-indigo-600 hover:text-white transition-soft">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                    </a>
+                                    <a href="/admin/categories/delete/<%= category.id %>" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')" class="p-3 bg-white border border-slate-100 rounded-xl shadow-sm text-red-600 hover:bg-red-600 hover:text-white transition-soft">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+
+                        <% if (categories.length === 0) { %>
+                        <tr>
+                            <td colspan="3" class="px-10 py-24 text-center">
+                                <div class="flex flex-col items-center opacity-40">
+                                    <svg class="w-20 h-20 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                                    <p class="text-xl font-bold italic tracking-tight">Belum Ada Kategori</p>
+                                    <p class="text-sm">Klik 'Tambah Kategori' untuk membuat kategori baru.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include('../layouts/footer') %>
